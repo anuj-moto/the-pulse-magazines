@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { anyone, authenticated } from '@/access'
+import { sendContactNotification } from '@/hooks/contactEmail'
 
 /** Messages sent through the site's contact form. */
 export const ContactSubmissions: CollectionConfig = {
@@ -22,6 +23,9 @@ export const ContactSubmissions: CollectionConfig = {
     delete: authenticated,
   },
   defaultSort: '-submittedAt',
+  hooks: {
+    afterChange: [sendContactNotification],
+  },
   fields: [
     {
       name: 'name',

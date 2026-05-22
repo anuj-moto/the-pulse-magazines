@@ -9,6 +9,9 @@ export const Subscribers: CollectionConfig = {
     defaultColumns: ['email', 'status', 'source', 'subscribedAt'],
     group: 'Inbox',
     description: 'Newsletter sign-ups. Use the "Export CSV" button to download the full list.',
+    components: {
+      beforeListTable: ['/components/admin/ExportSubscribersButton#ExportSubscribersButton'],
+    },
   },
   access: {
     // Anyone may subscribe; only logged-in users can read or manage the list.
