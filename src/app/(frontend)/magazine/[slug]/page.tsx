@@ -8,6 +8,7 @@ import { PayloadImage } from '@/components/content/PayloadImage'
 import { RichTextRenderer } from '@/components/content/RichTextRenderer'
 import { ShareButtons } from '@/components/content/ShareButtons'
 import { formatMonth } from '@/lib/format'
+import { buildMetadata, mediaUrl } from '@/lib/seo'
 import { SITE } from '@/lib/site'
 
 export const revalidate = 300
@@ -22,11 +23,15 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params
   const magazine = await getMagazineBySlug(slug)
-  if (!magazine) return { title: 'Not found' }
-  return {
+  if (!magazine) return { title: 'Not found', robots: { index: false } }
+  return buildMetadata({
     title: magazine.seo?.metaTitle || magazine.title,
-    description: magazine.seo?.metaDescription || magazine.excerpt || undefined,
-  }
+    description: magazine.seo?.metaDescription || magazine.excerpt,
+    path: `/magazine/${magazine.slug}`,
+    image: mediaUrl(magazine.seo?.ogImage) || mediaUrl(magazine.coverImage),
+    type: 'article',
+    publishedTime: magazine.issueDate || undefined,
+  })
 }
 
 export default async function MagazineDetailPage({ params }: Params) {

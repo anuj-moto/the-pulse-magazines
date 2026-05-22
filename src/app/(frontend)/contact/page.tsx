@@ -1,16 +1,17 @@
-import type { Metadata } from 'next'
 import { Mail } from 'lucide-react'
 import { Container } from '@/components/layout/Container'
 import { ContactForm } from '@/components/forms/ContactForm'
 import { LinkedInIcon } from '@/components/icons'
 import { getSiteSettings } from '@/lib/queries'
+import { buildMetadata } from '@/lib/seo'
 import { SOCIAL } from '@/lib/site'
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
   title: 'Contact',
   description:
     'Get in touch with The Pulse Magazines — share a story, propose a collaboration, or simply say hello.',
-}
+  path: '/contact',
+})
 
 export default async function ContactPage() {
   const settings = await getSiteSettings()

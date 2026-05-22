@@ -1,13 +1,15 @@
-import type { Metadata } from 'next'
 import { Search } from 'lucide-react'
 import { searchArticles } from '@/lib/queries'
 import { Container } from '@/components/layout/Container'
 import { ArticleGrid } from '@/components/content/ArticleGrid'
+import { buildMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
   title: 'Search',
-  robots: { index: false, follow: true },
-}
+  description: 'Search articles across The Pulse Magazines.',
+  path: '/search',
+  noindex: true,
+})
 
 export default async function SearchPage({
   searchParams,

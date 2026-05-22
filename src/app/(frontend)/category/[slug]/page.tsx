@@ -8,6 +8,7 @@ import {
   PAGE_SIZE,
 } from '@/lib/queries'
 import { Container } from '@/components/layout/Container'
+import { buildMetadata } from '@/lib/seo'
 import { ArchiveHeader } from '@/components/content/ArchiveHeader'
 import { ArticleGrid } from '@/components/content/ArticleGrid'
 import { Pagination } from '@/components/content/Pagination'
@@ -31,11 +32,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params
   const category = await getCategoryBySlug(slug)
-  if (!category) return { title: 'Not found' }
-  return {
+  if (!category) return { title: 'Not found', robots: { index: false } }
+  return buildMetadata({
     title: category.title,
     description: category.description || `Articles filed under ${category.title}.`,
-  }
+    path: `/category/${category.slug}`,
+  })
 }
 
 export default async function CategoryPage({ params, searchParams }: Params) {

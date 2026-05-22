@@ -26,6 +26,14 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(dirname),
   },
+  // 301/308 redirects preserving links from the old WordPress site.
+  async redirects() {
+    return [
+      { source: '/magazine-4', destination: '/magazine', permanent: true },
+      { source: '/feed', destination: '/feed.xml', permanent: true },
+      { source: '/feed/', destination: '/feed.xml', permanent: true },
+    ]
+  },
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })

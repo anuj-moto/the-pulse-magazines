@@ -1,5 +1,5 @@
-import type { Metadata } from 'next'
 import type { Magazine } from '@/payload-types'
+import { buildMetadata } from '@/lib/seo'
 import { getMagazines, PAGE_SIZE } from '@/lib/queries'
 import { Container } from '@/components/layout/Container'
 import { ArchiveHeader } from '@/components/content/ArchiveHeader'
@@ -8,11 +8,12 @@ import { Pagination } from '@/components/content/Pagination'
 
 export const revalidate = 300
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
   title: 'The Magazine',
   description:
     'Every issue of The Pulse Magazine — cover stories on the leaders, innovators and change-makers shaping business.',
-}
+  path: '/magazine',
+})
 
 export default async function MagazinePage({
   searchParams,

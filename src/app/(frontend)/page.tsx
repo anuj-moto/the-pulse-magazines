@@ -1,4 +1,5 @@
 import { getHomepageData } from '@/lib/queries'
+import { SITE } from '@/lib/site'
 import { Hero } from '@/components/home/Hero'
 import { EditorsChoice } from '@/components/home/EditorsChoice'
 import { LatestIssueHeadlines } from '@/components/home/LatestIssueHeadlines'
@@ -8,6 +9,17 @@ import { NewsletterCTA } from '@/components/home/NewsletterCTA'
 
 /** Re-generate the homepage at most every 5 minutes (plus on content edits). */
 export const revalidate = 300
+
+export const metadata = {
+  alternates: { canonical: SITE.url },
+  openGraph: {
+    type: 'website' as const,
+    url: SITE.url,
+    siteName: SITE.name,
+    title: `${SITE.name} — ${SITE.tagline}`,
+    description: SITE.description,
+  },
+}
 
 export default async function HomePage() {
   const data = await getHomepageData()
