@@ -24,7 +24,8 @@ next-env.d.ts
 *.sqlite
 *.sqlite-*
 
-# uploaded media (re-hosted by the CMS — not source code)
+# uploaded media (stored by the CMS — not source code)
+/media
 /public/media
 
 # WordPress migration artifacts
