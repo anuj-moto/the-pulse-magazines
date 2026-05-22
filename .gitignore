@@ -1,0 +1,45 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# next.js
+/.next/
+/out/
+/build
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# env files (never commit secrets)
+.env
+.env*.local
+
+# database (SQLite file + WAL/SHM sidecars)
+/pulse.db
+/pulse.db-*
+*.sqlite
+*.sqlite-*
+
+# uploaded media (re-hosted by the CMS — not source code)
+/public/media
+
+# WordPress migration artifacts
+/migration-report.txt
+/.migration-cache
+
+# editor / OS
+/.idea/*
+!/.idea/runConfigurations
+.DS_Store
+*.pem
+
+# debug logs
+npm-debug.log*
+yarn-debug.log*
+
+# vercel
+.vercel

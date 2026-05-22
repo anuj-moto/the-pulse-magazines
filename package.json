@@ -1,0 +1,69 @@
+{
+  "name": "the-pulse-magazine",
+  "version": "1.0.0",
+  "description": "The Pulse Magazines — editorial website and CMS",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20.9.0",
+    "pnpm": ">=9"
+  },
+  "scripts": {
+    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
+    "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
+    "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+    "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "migrate:wp": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" tsx scripts/migrate-wp.ts",
+    "export:subscribers": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" tsx scripts/export-subscribers.ts"
+  },
+  "dependencies": {
+    "@payloadcms/db-sqlite": "3.84.1",
+    "@payloadcms/email-nodemailer": "3.84.1",
+    "@payloadcms/next": "3.84.1",
+    "@payloadcms/richtext-lexical": "3.84.1",
+    "@payloadcms/ui": "3.84.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cross-env": "10.1.0",
+    "dotenv": "16.4.7",
+    "graphql": "^16.8.1",
+    "lucide-react": "^1.16.0",
+    "next": "16.2.6",
+    "p-limit": "^7.3.0",
+    "payload": "3.84.1",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "sharp": "0.34.2",
+    "tailwind-merge": "^3.6.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.0",
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/jsdom": "^28.0.3",
+    "@types/node": "24.12.3",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "eslint": "^9.16.0",
+    "eslint-config-next": "16.2.6",
+    "jsdom": "28.0.0",
+    "postcss": "^8.5.15",
+    "prettier": "^3.4.2",
+    "tailwindcss": "^4.3.0",
+    "tsx": "4.21.0",
+    "typescript": "6.0.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp",
+      "esbuild",
+      "unrs-resolver",
+      "libsql",
+      "@libsql/client"
+    ]
+  }
+}
