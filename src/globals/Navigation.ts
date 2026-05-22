@@ -1,5 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { anyone, authenticated } from '@/access'
+import { revalidateAfterGlobalChange } from '@/hooks/revalidate'
 
 /** Header and footer menus. */
 export const Navigation: GlobalConfig = {
@@ -12,6 +13,9 @@ export const Navigation: GlobalConfig = {
   access: {
     read: anyone,
     update: authenticated,
+  },
+  hooks: {
+    afterChange: [revalidateAfterGlobalChange],
   },
   fields: [
     {

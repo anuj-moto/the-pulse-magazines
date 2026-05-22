@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X, Search } from 'lucide-react'
-import { PRIMARY_NAV, SITE } from '@/lib/site'
+import { SITE, type NavItem } from '@/lib/site'
 import { cn } from '@/lib/utils'
 
 /** Hamburger menu + slide-down panel for small screens. */
-export function MobileNav() {
+export function MobileNav({ items }: { items: NavItem[] }) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
 
@@ -46,8 +46,8 @@ export function MobileNav() {
       >
         <nav className="flex h-full flex-col overflow-y-auto px-6 py-8">
           <ul className="flex flex-col">
-            {PRIMARY_NAV.map((item, i) => (
-              <li key={item.href} className="border-b border-hairline">
+            {items.map((item, i) => (
+              <li key={`${item.label}-${item.href}`} className="border-b border-hairline">
                 <Link
                   href={item.href}
                   className="flex items-baseline gap-4 py-4 font-serif text-2xl text-ink hover:text-crimson"

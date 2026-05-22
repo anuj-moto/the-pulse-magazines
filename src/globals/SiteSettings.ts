@@ -1,5 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { anyone, authenticated } from '@/access'
+import { revalidateAfterGlobalChange } from '@/hooks/revalidate'
 
 /** Site-wide identity, contact details, social links and analytics. */
 export const SiteSettings: GlobalConfig = {
@@ -12,6 +13,9 @@ export const SiteSettings: GlobalConfig = {
   access: {
     read: anyone,
     update: authenticated,
+  },
+  hooks: {
+    afterChange: [revalidateAfterGlobalChange],
   },
   fields: [
     {

@@ -3,6 +3,7 @@ import { authenticated, publishedOrAuthenticated } from '@/access'
 import { slugField } from '@/fields/slug'
 import { seoField } from '@/fields/seo'
 import { wpIdField } from '@/fields/wpId'
+import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidate'
 
 /** Standalone pages — About, Privacy Policy, Terms of Use, Disclaimer. */
 export const Pages: CollectionConfig = {
@@ -25,6 +26,10 @@ export const Pages: CollectionConfig = {
     create: authenticated,
     update: authenticated,
     delete: authenticated,
+  },
+  hooks: {
+    afterChange: [revalidateAfterChange],
+    afterDelete: [revalidateAfterDelete],
   },
   fields: [
     {

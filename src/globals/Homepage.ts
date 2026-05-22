@@ -1,5 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { anyone, authenticated } from '@/access'
+import { revalidateAfterGlobalChange } from '@/hooks/revalidate'
 
 /**
  * Homepage curation. Every section has an automatic fallback, so the
@@ -15,6 +16,9 @@ export const Homepage: GlobalConfig = {
   access: {
     read: anyone,
     update: authenticated,
+  },
+  hooks: {
+    afterChange: [revalidateAfterGlobalChange],
   },
   fields: [
     {

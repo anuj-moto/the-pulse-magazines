@@ -3,10 +3,17 @@ import { Search } from 'lucide-react'
 import { Container } from './Container'
 import { NavLink } from './NavLink'
 import { MobileNav } from './MobileNav'
-import { PRIMARY_NAV, SITE } from '@/lib/site'
+import { PRIMARY_NAV, SITE, type NavItem } from '@/lib/site'
+import { getNavigation } from '@/lib/queries'
 
 /** Editorial masthead: top strip, wordmark, then a sticky section nav. */
-export function Header() {
+export async function Header() {
+  const nav = await getNavigation()
+  const items: NavItem[] =
+    nav?.headerLinks && nav.headerLinks.length > 0
+      ? nav.headerLinks.map((l) => ({ label: l.label, href: l.url }))
+      : PRIMARY_NAV
+
   return (
     <header className="bg-paper">
       {/* Top strip */}
@@ -40,21 +47,18 @@ export function Header() {
             className="flex h-14 items-center justify-between md:h-auto md:justify-center"
           >
             <ul className="hidden items-center gap-7 md:flex lg:gap-9">
-              {PRIMARY_NAV.map((item) => (
-                <li key={item.href}>
+              {items.map((item) => (
+                <li key={`${item.label}-${item.href}`}>
                   <NavLink href={item.href} label={item.label} />
                 </li>
               ))}
             </ul>
 
             {/* Mobile: condensed wordmark + hamburger */}
-            <Link
-              href="/"
-              className="font-serif text-lg font-semibold text-ink md:hidden"
-            >
+            <Link href="/" className="font-serif text-lg font-semibold text-ink md:hidden">
               The Pulse
             </Link>
-            <MobileNav />
+            <MobileNav items={items} />
           </nav>
         </Container>
       </div>

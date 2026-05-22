@@ -3,6 +3,7 @@ import { authenticated, publishedOrAuthenticated } from '@/access'
 import { slugField } from '@/fields/slug'
 import { seoField } from '@/fields/seo'
 import { wpIdField } from '@/fields/wpId'
+import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidate'
 
 /** News stories, interviews and features — the primary content type. */
 export const Articles: CollectionConfig = {
@@ -29,6 +30,10 @@ export const Articles: CollectionConfig = {
     create: authenticated,
     update: authenticated,
     delete: authenticated,
+  },
+  hooks: {
+    afterChange: [revalidateAfterChange],
+    afterDelete: [revalidateAfterDelete],
   },
   fields: [
     {
