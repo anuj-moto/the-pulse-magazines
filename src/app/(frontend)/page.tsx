@@ -1,59 +1,38 @@
-import { headers as getHeaders } from 'next/headers.js'
-import Image from 'next/image'
-import { getPayload } from 'payload'
-import React from 'react'
-import { fileURLToPath } from 'url'
+import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
+import { Container } from '@/components/layout/Container'
+import { buttonVariants } from '@/components/ui/button'
+import { SITE } from '@/lib/site'
 
-import config from '@/payload.config'
-import './styles.css'
-
-export default async function HomePage() {
-  const headers = await getHeaders()
-  const payloadConfig = await config
-  const payload = await getPayload({ config: payloadConfig })
-  const { user } = await payload.auth({ headers })
-
-  const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`
-
+/**
+ * Placeholder homepage — the data-driven homepage (Editor's Choice,
+ * Latest Issue, Top Headlines, Testimonials, Latest Posts) is built in
+ * Phase 6 once the WordPress content has been migrated.
+ */
+export default function HomePage() {
   return (
-    <div className="home">
-      <div className="content">
-        <picture>
-          <source srcSet="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-favicon.svg" />
-          <Image
-            alt="Payload Logo"
-            height={65}
-            src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-favicon.svg"
-            width={65}
-          />
-        </picture>
-        {!user && <h1>Welcome to your new project.</h1>}
-        {user && <h1>Welcome back, {user.email}</h1>}
-        <div className="links">
-          <a
-            className="admin"
-            href={payloadConfig.routes.admin}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Go to admin panel
-          </a>
-          <a
-            className="docs"
-            href="https://payloadcms.com/docs"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Documentation
-          </a>
-        </div>
+    <Container className="flex flex-col items-center py-24 text-center sm:py-32">
+      <p className="eyebrow text-crimson">Business · Leadership · Innovation</p>
+      <h1 className="mt-6 max-w-4xl font-serif text-[2.6rem] leading-[1.05] font-semibold tracking-tight text-ink sm:text-6xl lg:text-7xl">
+        Where every story matters.
+      </h1>
+      <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
+        {SITE.description}
+      </p>
+      <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <Link href="/blog" className={buttonVariants({ variant: 'primary' })}>
+          Read the latest
+          <ArrowRight size={16} strokeWidth={2} />
+        </Link>
+        <Link href="/magazine" className={buttonVariants({ variant: 'outline' })}>
+          Browse the magazine
+        </Link>
       </div>
-      <div className="footer">
-        <p>Update this page by editing</p>
-        <a className="codeLink" href={fileURL}>
-          <code>app/(frontend)/page.tsx</code>
-        </a>
-      </div>
-    </div>
+      <hr className="rule mt-20 w-full max-w-md" />
+      <p className="mt-6 max-w-md text-sm text-faint">
+        The redesigned homepage is assembled section by section in the next build
+        phase, once existing articles and magazine issues have been migrated.
+      </p>
+    </Container>
   )
 }
