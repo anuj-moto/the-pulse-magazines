@@ -1,6 +1,7 @@
 import path from 'path'
 import type { CollectionConfig } from 'payload'
 import { anyone, authenticated } from '@/access'
+import { wpIdField } from '@/fields/wpId'
 
 /** Image library — featured images, magazine covers, in-article photos, avatars. */
 export const Media: CollectionConfig = {
@@ -49,5 +50,6 @@ export const Media: CollectionConfig = {
         description: 'Optional photo credit or source.',
       },
     },
+    wpIdField,
   ],
 }

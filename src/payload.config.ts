@@ -90,6 +90,10 @@ export default buildConfig({
     client: {
       url: process.env.DATABASE_URI || 'file:./pulse.db',
     },
+    // Use committed migration files rather than dev auto-push, so local and
+    // production schemas are deterministic and identical.
+    push: false,
+    migrationDir: path.resolve(dirname, 'migrations'),
   }),
   sharp,
   plugins: [],

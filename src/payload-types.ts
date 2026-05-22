@@ -231,6 +231,7 @@ export interface Media {
    * Optional photo credit or source.
    */
   credit?: string | null;
+  wpId?: number | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -722,6 +723,7 @@ export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
   credit?: T;
+  wpId?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

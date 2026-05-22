@@ -17,6 +17,9 @@
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "db:migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
+    "db:migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
+    "db:migrate:status": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:status",
     "migrate:wp": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" tsx scripts/migrate-wp.ts",
     "export:subscribers": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" tsx scripts/export-subscribers.ts"
   },
