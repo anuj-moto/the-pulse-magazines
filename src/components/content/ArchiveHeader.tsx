@@ -11,19 +11,19 @@ export function ArchiveHeader({
   count?: number
 }) {
   return (
-    <header className="border-b border-ink pb-8">
-      {eyebrow && <p className="eyebrow text-crimson">{eyebrow}</p>}
-      <h1 className="mt-2 font-serif text-4xl leading-[1.05] font-semibold tracking-tight sm:text-5xl">
+    <header className="border-b border-hairline-strong pb-10">
+      {eyebrow && <p className="eyebrow text-electric">{eyebrow}</p>}
+      <h1 className="mt-3 font-serif text-[2.4rem] leading-[1.04] font-normal tracking-[-0.022em] sm:text-[3.5rem]">
         {title}
       </h1>
       {description && (
-        <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
+        <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">
           {description}
         </p>
       )}
       {count != null && (
-        <p className="eyebrow mt-4 text-faint">
-          {count} {count === 1 ? 'story' : 'stories'}
+        <p className="eyebrow mt-5 text-faint">
+          <span className="num">{count}</span> {count === 1 ? 'story' : 'stories'}
         </p>
       )}
     </header>

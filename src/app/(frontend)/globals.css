@@ -2,32 +2,44 @@
 @plugin '@tailwindcss/typography';
 
 /* ───────────────────────────────────────────────────────────────
-   The Pulse Magazines — "Ink & Paper" design tokens
-   Modern editorial: warm paper, near-black ink, one crimson accent.
+   The Pulse Magazines — "Signal" design tokens v2
+   Minimalist editorial · futuristic accents · electric moments.
    ─────────────────────────────────────────────────────────────── */
 @theme {
-  /* Palette */
-  --color-paper: #faf9f6; /* page background */
-  --color-paper-dim: #f1efe8; /* alternating sections, cards */
-  --color-ink: #16140f; /* primary text / headlines */
-  --color-ink-soft: #3a372f; /* article body copy */
-  --color-muted: #6b6b6b; /* secondary text */
-  --color-faint: #9a968c; /* meta, captions, labels */
-  --color-hairline: #e4e1da; /* rules & borders */
-  --color-crimson: #b91c1c; /* accent */
-  --color-crimson-dark: #991b1b; /* accent hover */
+  /* Surface */
+  --color-paper: #f5f5f2; /* page background */
+  --color-panel: #ffffff; /* cards, surfaces lifted off paper */
+  --color-paper-dim: #efefe9; /* alternating sections */
+  --color-night: #0d0d0d; /* dark band — ticker, newsletter */
+  --color-night-2: #161618; /* dark panel surface */
 
-  /* Typography — wired to next/font CSS variables (see layout.tsx) */
-  --font-serif: var(--font-fraunces), Georgia, 'Times New Roman', serif;
+  /* Type */
+  --color-ink: #0d0d0d; /* primary text / headlines */
+  --color-ink-soft: #242424; /* body copy */
+  --color-muted: #5a5a5a; /* secondary text */
+  --color-faint: #888888; /* meta, labels */
+  --color-hairline: #e5e5e0; /* rules & borders */
+  --color-hairline-strong: #cfcfc8;
+
+  /* Signal */
+  --color-electric: #3366ff; /* primary accent — links, focus, CTAs */
+  --color-electric-soft: #e8efff;
+  --color-up: #10b981; /* market gain */
+  --color-down: #e11d48; /* market loss */
+
+  /* Type stacks — wired to next/font CSS variables (see layout.tsx) */
+  --font-serif: var(--font-instrument), 'Times New Roman', Georgia, serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-mono), 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
   /* Radius — sharp, print-like */
   --radius-sharp: 2px;
 
-  /* Motion — restrained, editorial */
+  /* Motion */
   --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-magnetic: cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* Content measure */
+  /* Content */
   --container-prose: 44rem;
 }
 
@@ -36,13 +48,14 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+    background: var(--color-paper);
   }
 
   body {
     background-color: var(--color-paper);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    font-feature-settings: 'kern';
+    font-feature-settings: 'kern', 'ss01';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -54,19 +67,18 @@
   h4,
   h5 {
     font-family: var(--font-serif);
-    font-weight: 600;
-    letter-spacing: -0.01em;
+    font-weight: 400;
+    letter-spacing: -0.012em;
   }
 
-  /* Default focus ring — crimson, offset on paper */
   :focus-visible {
-    outline: 2px solid var(--color-crimson);
+    outline: 2px solid var(--color-electric);
     outline-offset: 2px;
     border-radius: 2px;
   }
 
   ::selection {
-    background-color: var(--color-crimson);
+    background-color: var(--color-electric);
     color: var(--color-paper);
   }
 
@@ -79,11 +91,11 @@
 @layer components {
   /* Small uppercase label — kickers, section eyebrows, meta */
   .eyebrow {
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     font-size: 0.6875rem;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
   }
 
@@ -99,40 +111,73 @@
     background-position: 0 100%;
     background-repeat: no-repeat;
     background-size: 0% 1px;
-    transition: background-size 0.3s var(--ease-editorial);
+    transition: background-size 0.35s var(--ease-editorial);
   }
   .link-underline:hover {
     background-size: 100% 1px;
   }
 
-  /* Drop cap for article openers (the Ink & Paper signature) */
+  /* Drop cap for article openers (signature) */
   .drop-cap::first-letter {
     float: left;
     font-family: var(--font-serif);
-    font-weight: 600;
-    font-size: 3.9em;
+    font-weight: 400;
+    font-size: 4.2em;
     line-height: 0.82;
-    padding: 0.06em 0.09em 0 0;
-    color: var(--color-crimson);
+    padding: 0.06em 0.1em 0 0;
+    color: var(--color-electric);
+  }
+
+  /* Mono numerics — tabular figures for tickers and counters */
+  .num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  /* Frosted nav surface */
+  .glass {
+    background-color: color-mix(in oklab, var(--color-paper) 78%, transparent);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+    backdrop-filter: saturate(140%) blur(14px);
   }
 }
 
-/* ── Long-form article typography (Tailwind Typography retheme) ── */
+/* ── Marquee animation (ticker) ──────────────────────────────── */
+@keyframes pulse-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: pulse-marquee 60s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* ── Long-form article typography ─────────────────────────────── */
 .prose-pulse {
   --tw-prose-body: var(--color-ink-soft);
   --tw-prose-headings: var(--color-ink);
   --tw-prose-lead: var(--color-muted);
-  --tw-prose-links: var(--color-crimson);
+  --tw-prose-links: var(--color-electric);
   --tw-prose-bold: var(--color-ink);
   --tw-prose-counters: var(--color-faint);
-  --tw-prose-bullets: var(--color-hairline);
+  --tw-prose-bullets: var(--color-hairline-strong);
   --tw-prose-hr: var(--color-hairline);
   --tw-prose-quotes: var(--color-ink);
-  --tw-prose-quote-borders: var(--color-crimson);
+  --tw-prose-quote-borders: var(--color-electric);
   --tw-prose-captions: var(--color-faint);
   --tw-prose-code: var(--color-ink);
   --tw-prose-pre-code: var(--color-paper);
-  --tw-prose-pre-bg: var(--color-ink);
+  --tw-prose-pre-bg: var(--color-night);
   --tw-prose-th-borders: var(--color-hairline);
   --tw-prose-td-borders: var(--color-hairline);
   font-family: var(--font-sans);
@@ -140,7 +185,8 @@
 
 .prose-pulse :is(h2, h3, h4) {
   font-family: var(--font-serif);
-  letter-spacing: -0.015em;
+  letter-spacing: -0.018em;
+  font-weight: 400;
 }
 
 .prose-pulse a {
@@ -151,7 +197,16 @@
 .prose-pulse blockquote {
   font-family: var(--font-serif);
   font-style: italic;
-  font-weight: 500;
+  font-weight: 400;
+  border-left-width: 2px;
+}
+
+.prose-pulse code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--color-paper-dim);
+  padding: 0.1em 0.35em;
+  border-radius: 2px;
 }
 
 /* ── Reduced motion ───────────────────────────────────────────── */
@@ -165,5 +220,8 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  .animate-marquee {
+    animation: none !important;
   }
 }

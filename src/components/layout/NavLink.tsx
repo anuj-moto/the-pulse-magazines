@@ -14,15 +14,15 @@ export function NavLink({ href, label }: { href: string; label: string }) {
       href={href}
       aria-current={active ? 'page' : undefined}
       className={cn(
-        'relative py-4 text-[0.8rem] font-medium tracking-wide whitespace-nowrap transition-colors',
-        'hover:text-crimson',
-        active ? 'text-crimson' : 'text-ink',
+        'relative py-3.5 text-[0.78rem] font-medium tracking-wide whitespace-nowrap transition-colors',
+        'hover:text-electric',
+        active ? 'text-electric' : 'text-ink',
       )}
     >
       {label}
       <span
         className={cn(
-          'absolute inset-x-0 -bottom-px h-0.5 bg-crimson transition-transform duration-200 ease-editorial',
+          'absolute inset-x-0 -bottom-px h-px bg-electric transition-transform duration-300 ease-editorial',
           active ? 'scale-x-100' : 'scale-x-0',
         )}
       />

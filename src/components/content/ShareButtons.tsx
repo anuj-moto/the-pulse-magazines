@@ -24,7 +24,8 @@ export function ShareButtons({ url, title }: { url: string; title: string }) {
   }
 
   const btn =
-    'flex h-10 w-10 items-center justify-center rounded-sharp border border-hairline text-ink transition-colors hover:border-ink hover:bg-ink hover:text-paper'
+    'flex h-10 w-10 items-center justify-center rounded-sharp border border-hairline text-ink ' +
+    'transition-all duration-200 ease-editorial hover:-translate-y-px hover:border-electric hover:text-electric'
 
   return (
     <div className="flex items-center gap-2">

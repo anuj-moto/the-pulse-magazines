@@ -6,7 +6,11 @@ import { MobileNav } from './MobileNav'
 import { PRIMARY_NAV, SITE, type NavItem } from '@/lib/site'
 import { getNavigation } from '@/lib/queries'
 
-/** Editorial masthead: top strip, wordmark, then a sticky section nav. */
+/**
+ * Signal masthead: tight wordmark row, then a frosted sticky section nav.
+ * The live ticker sits above (mounted in the root layout), so there's no
+ * static tagline strip here anymore.
+ */
 export async function Header() {
   const nav = await getNavigation()
   const items: NavItem[] =
@@ -16,49 +20,40 @@ export async function Header() {
 
   return (
     <header className="bg-paper">
-      {/* Top strip */}
+      {/* Wordmark row */}
       <div className="border-b border-hairline">
-        <Container className="flex h-9 items-center justify-between">
-          <span className="eyebrow text-faint">{SITE.tagline}</span>
+        <Container className="flex h-14 items-center justify-between sm:h-16">
           <Link
-            href="/search"
-            className="eyebrow flex items-center gap-1.5 text-faint hover:text-crimson"
+            href="/"
+            className="font-serif text-2xl font-normal tracking-[-0.02em] text-ink transition-opacity hover:opacity-70 sm:text-[1.75rem]"
+            aria-label={`${SITE.name} — home`}
           >
-            <Search size={13} strokeWidth={2} />
-            <span className="hidden sm:inline">Search</span>
+            The Pulse Magazines
           </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/search"
+              className="hidden h-9 items-center gap-1.5 rounded-sharp border border-hairline px-3 text-xs text-faint transition-colors hover:border-ink hover:text-ink sm:flex"
+            >
+              <Search size={13} strokeWidth={2} />
+              <span className="font-mono uppercase tracking-wider">Search</span>
+            </Link>
+            <MobileNav items={items} />
+          </div>
         </Container>
       </div>
 
-      {/* Wordmark */}
-      <Container className="py-7 text-center sm:py-9">
-        <Link href="/" className="inline-block" aria-label={`${SITE.name} — home`}>
-          <span className="block font-serif text-[1.25rem] leading-none font-semibold tracking-tight text-ink sm:text-[2.75rem] lg:text-[3.25rem]">
-            The Pulse Magazines
-          </span>
-        </Link>
-      </Container>
-
       {/* Sticky section nav */}
-      <div className="sticky top-0 z-50 border-y border-ink bg-paper">
+      <div className="sticky top-0 z-40 hidden border-b border-hairline glass md:block">
         <Container>
-          <nav
-            aria-label="Primary"
-            className="flex h-14 items-center justify-between md:h-auto md:justify-center"
-          >
-            <ul className="hidden items-center gap-7 md:flex lg:gap-9">
+          <nav aria-label="Primary" className="flex items-center justify-center">
+            <ul className="flex items-center gap-7 lg:gap-9">
               {items.map((item) => (
                 <li key={`${item.label}-${item.href}`}>
                   <NavLink href={item.href} label={item.label} />
                 </li>
               ))}
             </ul>
-
-            {/* Mobile: condensed wordmark + hamburger */}
-            <Link href="/" className="font-serif text-lg font-semibold text-ink md:hidden">
-              The Pulse
-            </Link>
-            <MobileNav items={items} />
           </nav>
         </Container>
       </div>

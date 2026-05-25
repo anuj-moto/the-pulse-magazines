@@ -3,6 +3,7 @@
 import { useActionState } from 'react'
 import { ArrowRight, Check, Loader2 } from 'lucide-react'
 import { subscribe, type SubscribeState } from '@/actions/subscribe'
+import { MagneticButton } from '@/components/motion/MagneticButton'
 import { cn } from '@/lib/utils'
 
 const initialState: SubscribeState = { status: 'idle', message: '' }
@@ -17,14 +18,14 @@ export function NewsletterForm({ tone = 'light' }: { tone?: 'light' | 'dark' }) 
     return (
       <p
         className={cn(
-          'flex items-center gap-2 text-sm font-medium',
+          'flex items-center gap-3 text-sm font-medium',
           dark ? 'text-paper' : 'text-ink',
         )}
       >
         <span
           className={cn(
-            'flex h-6 w-6 items-center justify-center rounded-full',
-            dark ? 'bg-paper text-ink' : 'bg-crimson text-paper',
+            'flex h-7 w-7 items-center justify-center rounded-full',
+            dark ? 'bg-electric text-paper' : 'bg-electric text-paper',
           )}
         >
           <Check size={14} strokeWidth={3} />
@@ -44,7 +45,7 @@ export function NewsletterForm({ tone = 'light' }: { tone?: 'light' | 'dark' }) 
         </label>
       </div>
 
-      <div className="flex flex-col gap-2.5 sm:flex-row">
+      <div className="flex flex-col gap-3 sm:flex-row">
         <label htmlFor="newsletter-email" className="sr-only">
           Email address
         </label>
@@ -56,28 +57,42 @@ export function NewsletterForm({ tone = 'light' }: { tone?: 'light' | 'dark' }) 
           placeholder="your@email.com"
           className={cn(
             'h-12 flex-1 rounded-sharp border px-4 text-sm outline-none transition-colors',
-            'focus-visible:border-crimson',
+            'focus-visible:border-electric',
             dark
-              ? 'border-paper/30 bg-transparent text-paper placeholder:text-paper/45'
+              ? 'border-paper/25 bg-transparent text-paper placeholder:text-paper/45'
               : 'border-hairline bg-paper text-ink placeholder:text-faint',
           )}
         />
-        <button
-          type="submit"
-          disabled={pending}
-          className={cn(
-            'flex h-12 items-center justify-center gap-2 rounded-sharp px-6 text-sm font-medium transition-colors disabled:opacity-60',
-            dark
-              ? 'bg-paper text-ink hover:bg-crimson hover:text-paper'
-              : 'bg-ink text-paper hover:bg-crimson',
-          )}
-        >
-          {pending ? <Loader2 size={16} className="animate-spin" /> : <>Subscribe<ArrowRight size={15} /></>}
-        </button>
+        <MagneticButton>
+          <button
+            type="submit"
+            disabled={pending}
+            className={cn(
+              'inline-flex h-12 items-center justify-center gap-2 rounded-sharp px-7 text-sm font-medium transition-colors disabled:opacity-60',
+              dark
+                ? 'bg-electric text-paper hover:bg-paper hover:text-ink'
+                : 'bg-ink text-paper hover:bg-electric',
+            )}
+          >
+            {pending ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : (
+              <>
+                Subscribe <ArrowRight size={15} />
+              </>
+            )}
+          </button>
+        </MagneticButton>
       </div>
 
       {state.status === 'error' && (
-        <p className="mt-2 text-sm text-crimson" role="alert">
+        <p
+          className={cn(
+            'mt-2 text-sm',
+            dark ? 'text-down' : 'text-down',
+          )}
+          role="alert"
+        >
           {state.message}
         </p>
       )}

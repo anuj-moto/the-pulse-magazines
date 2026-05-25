@@ -1,10 +1,11 @@
 import Link from 'next/link'
+import { ArrowUpRight } from 'lucide-react'
 import { LinkedInIcon } from '@/components/icons'
 import { Container } from './Container'
 import { FOOTER_NAV, SITE, SOCIAL } from '@/lib/site'
 import { getNavigation, getSiteSettings } from '@/lib/queries'
 
-/** Site footer — masthead block, link columns, legal bar. */
+/** Site footer — large brand block, link columns, legal bar. */
 export async function Footer() {
   const year = new Date().getFullYear()
   const [nav, settings] = await Promise.all([getNavigation(), getSiteSettings()])
@@ -21,24 +22,31 @@ export async function Footer() {
   const description = settings?.description || SITE.description
 
   return (
-    <footer className="mt-24 border-t border-ink bg-paper-dim">
-      <Container className="py-14 sm:py-16">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_repeat(3,1fr)]">
-          {/* Masthead block */}
-          <div className="max-w-sm">
-            <Link href="/" className="font-serif text-2xl font-semibold text-ink">
+    <footer className="mt-24 border-t border-hairline bg-paper">
+      <Container className="py-16 sm:py-20">
+        <div className="grid gap-12 lg:grid-cols-[1.5fr_repeat(3,1fr)] lg:gap-16">
+          {/* Brand block */}
+          <div className="max-w-md">
+            <Link
+              href="/"
+              className="font-serif text-3xl leading-tight font-normal tracking-[-0.02em] text-ink"
+            >
               The Pulse Magazines
             </Link>
-            <p className="mt-3 text-sm leading-relaxed text-muted">{description}</p>
+            <p className="mt-4 text-sm leading-relaxed text-muted">{description}</p>
             {linkedin && (
               <a
                 href={linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-6 inline-flex h-10 w-10 items-center justify-center rounded-sharp border border-hairline text-ink transition-colors hover:border-ink hover:bg-ink hover:text-paper"
-                aria-label="The Pulse Magazines on LinkedIn"
+                className="group mt-6 inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-electric"
               >
-                <LinkedInIcon size={16} />
+                <LinkedInIcon size={15} />
+                LinkedIn
+                <ArrowUpRight
+                  size={14}
+                  className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                />
               </a>
             )}
           </div>
@@ -47,12 +55,12 @@ export async function Footer() {
           {columns.map((col) => (
             <nav key={col.heading} aria-label={col.heading}>
               <h2 className="eyebrow text-faint">{col.heading}</h2>
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-5 space-y-3">
                 {col.items.map((item) => (
                   <li key={`${item.label}-${item.href}`}>
                     <Link
                       href={item.href}
-                      className="text-sm text-ink-soft transition-colors hover:text-crimson"
+                      className="link-underline text-sm text-ink-soft transition-colors hover:text-electric"
                     >
                       {item.label}
                     </Link>
@@ -66,8 +74,8 @@ export async function Footer() {
 
       {/* Legal bar */}
       <div className="border-t border-hairline">
-        <Container className="flex flex-col gap-2 py-5 text-xs text-faint sm:flex-row sm:items-center sm:justify-between">
-          <p>© {year} The Pulse Magazines. All rights reserved.</p>
+        <Container className="flex flex-col gap-3 py-5 text-xs text-faint sm:flex-row sm:items-center sm:justify-between">
+          <p className="num">© {year} The Pulse Magazines. All rights reserved.</p>
           <p className="eyebrow">{SITE.tagline}</p>
         </Container>
       </div>

@@ -16,22 +16,21 @@ export function Pagination({
 
   const hrefFor = (p: number) => (p <= 1 ? basePath : `${basePath}?page=${p}`)
 
-  // Build a compact page window: 1 … (p-1) p (p+1) … last
   const pages = new Set<number>([1, totalPages, page, page - 1, page + 1])
   const visible = [...pages]
     .filter((p) => p >= 1 && p <= totalPages)
     .sort((a, b) => a - b)
 
   const arrow =
-    'flex h-10 w-10 items-center justify-center rounded-sharp border border-hairline transition-colors'
+    'flex h-10 w-10 items-center justify-center rounded-sharp border border-hairline transition-all duration-200 hover:-translate-y-px'
 
   return (
     <nav
       aria-label="Pagination"
-      className="mt-14 flex items-center justify-center gap-1.5"
+      className="mt-16 flex items-center justify-center gap-2"
     >
       {page > 1 ? (
-        <Link href={hrefFor(page - 1)} className={cn(arrow, 'hover:border-ink hover:bg-ink hover:text-paper')} aria-label="Previous page">
+        <Link href={hrefFor(page - 1)} className={cn(arrow, 'hover:border-electric hover:text-electric')} aria-label="Previous page">
           <ChevronLeft size={16} />
         </Link>
       ) : (
@@ -43,19 +42,19 @@ export function Pagination({
       {visible.map((p, i) => {
         const gap = i > 0 && p - visible[i - 1] > 1
         return (
-          <span key={p} className="flex items-center gap-1.5">
-            {gap && <span className="px-1 text-faint">…</span>}
+          <span key={p} className="flex items-center gap-2">
+            {gap && <span className="num px-1 text-faint">…</span>}
             {p === page ? (
               <span
                 aria-current="page"
-                className="flex h-10 min-w-10 items-center justify-center rounded-sharp bg-ink px-3 text-sm font-medium text-paper"
+                className="num flex h-10 min-w-10 items-center justify-center rounded-sharp bg-ink px-3 text-sm font-medium text-paper"
               >
                 {p}
               </span>
             ) : (
               <Link
                 href={hrefFor(p)}
-                className="flex h-10 min-w-10 items-center justify-center rounded-sharp border border-hairline px-3 text-sm transition-colors hover:border-ink"
+                className="num flex h-10 min-w-10 items-center justify-center rounded-sharp border border-hairline px-3 text-sm transition-all duration-200 hover:-translate-y-px hover:border-electric hover:text-electric"
               >
                 {p}
               </Link>
@@ -65,7 +64,7 @@ export function Pagination({
       })}
 
       {page < totalPages ? (
-        <Link href={hrefFor(page + 1)} className={cn(arrow, 'hover:border-ink hover:bg-ink hover:text-paper')} aria-label="Next page">
+        <Link href={hrefFor(page + 1)} className={cn(arrow, 'hover:border-electric hover:text-electric')} aria-label="Next page">
           <ChevronRight size={16} />
         </Link>
       ) : (

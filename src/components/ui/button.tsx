@@ -4,15 +4,15 @@ import { cn } from '@/lib/utils'
 export const buttonVariants = cva(
   'inline-flex items-center justify-center gap-2 rounded-sharp font-sans font-medium ' +
     'transition-colors duration-200 ease-editorial ' +
-    'focus-visible:outline-2 focus-visible:outline-crimson focus-visible:outline-offset-2 ' +
+    'focus-visible:outline-2 focus-visible:outline-electric focus-visible:outline-offset-2 ' +
     'disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
-        primary: 'bg-ink text-paper hover:bg-crimson',
-        accent: 'bg-crimson text-paper hover:bg-crimson-dark',
+        primary: 'bg-ink text-paper hover:bg-electric',
+        accent: 'bg-electric text-paper hover:bg-ink',
         outline: 'border border-ink text-ink hover:bg-ink hover:text-paper',
-        ghost: 'text-ink hover:text-crimson',
+        ghost: 'text-ink hover:text-electric',
       },
       size: {
         sm: 'h-9 px-4 text-xs tracking-wide',
@@ -27,7 +27,7 @@ export const buttonVariants = cva(
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants>
 
-/** Editorial button. For links styled as buttons, apply `buttonVariants()` to a `<Link>`. */
+/** Signal button. For links styled as buttons, apply `buttonVariants()` to a `<Link>`. */
 export function Button({ className, variant, size, ...props }: ButtonProps) {
   return <button className={cn(buttonVariants({ variant, size }), className)} {...props} />
 }

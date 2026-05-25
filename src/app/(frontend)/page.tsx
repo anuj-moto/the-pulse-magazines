@@ -1,6 +1,6 @@
 import { getHomepageData } from '@/lib/queries'
 import { SITE } from '@/lib/site'
-import { Hero } from '@/components/home/Hero'
+import { CinematicHero } from '@/components/home/CinematicHero'
 import { EditorsChoice } from '@/components/home/EditorsChoice'
 import { LatestIssueHeadlines } from '@/components/home/LatestIssueHeadlines'
 import { LatestPosts } from '@/components/home/LatestPosts'
@@ -26,7 +26,7 @@ export default async function HomePage() {
 
   return (
     <>
-      {data.hero && <Hero article={data.hero} />}
+      {data.hero && <CinematicHero article={data.hero} />}
       <EditorsChoice articles={data.editorsChoice} />
       <LatestIssueHeadlines magazine={data.latestIssue} headlines={data.topHeadlines} />
       <LatestPosts articles={data.latestPosts} />

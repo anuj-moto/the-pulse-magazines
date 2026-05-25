@@ -235,6 +235,7 @@ ones for production are:
 | `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` | Outgoing email |
 | `CONTACT_NOTIFY_EMAIL` | Inbox that receives contact-form messages |
 | `WORDPRESS_API_URL` | Only needed if re-running `pnpm migrate:wp` |
+| `FINNHUB_API_KEY` | Optional. Free key from [finnhub.io](https://finnhub.io/register) — powers the stocks half of the live market ticker. Without it, the ticker silently falls back to crypto-only (BTC / ETH / SOL via CoinGecko, which needs no key). |
 
 ---
 
@@ -254,6 +255,10 @@ ones for production are:
 - **About page** is re-authored fresh from the existing copy — the
   WordPress original was Elementor markup that wouldn't have round-tripped
   cleanly. Edit it in the CMS as you like.
+- **Live market ticker** at the top of every page caches its data for
+  60 seconds per process. With `FINNHUB_API_KEY` set it shows
+  SPY/QQQ/AAPL/MSFT/NVDA/GOOGL/META/TSLA + BTC/ETH/SOL. Without it,
+  crypto only. The whole band hides if both providers are unreachable.
 
 ---
 

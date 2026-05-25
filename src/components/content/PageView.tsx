@@ -5,18 +5,18 @@ import { RichTextRenderer } from './RichTextRenderer'
 /** Standalone page (About, legal) reading view. */
 export function PageView({ page }: { page: Page }) {
   return (
-    <article className="py-12 sm:py-16">
-      <Container className="max-w-[760px]">
-        <header className="border-b border-ink pb-8">
-          <h1 className="font-serif text-4xl leading-[1.05] font-semibold tracking-tight sm:text-5xl">
+    <article className="py-14 sm:py-20">
+      <Container className="max-w-[780px]">
+        <header className="border-b border-hairline-strong pb-10">
+          <h1 className="font-serif text-[2.4rem] leading-[1.04] font-normal tracking-[-0.022em] sm:text-[3.5rem]">
             {page.title}
           </h1>
           {page.subtitle && (
-            <p className="mt-4 text-lg leading-relaxed text-muted">{page.subtitle}</p>
+            <p className="mt-5 text-lg leading-relaxed text-muted">{page.subtitle}</p>
           )}
         </header>
       </Container>
-      <Container className="mt-10 max-w-[720px]">
+      <Container className="mt-12 max-w-[720px]">
         <RichTextRenderer data={page.content} />
       </Container>
     </article>

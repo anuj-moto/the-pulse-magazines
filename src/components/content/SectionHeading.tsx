@@ -19,20 +19,20 @@ export function SectionHeading({
   return (
     <div
       className={cn(
-        'flex items-end justify-between gap-4 border-b border-ink pb-3',
+        'flex items-end justify-between gap-4 border-b border-hairline-strong pb-4',
         className,
       )}
     >
       <div>
-        {eyebrow && <p className="eyebrow text-crimson">{eyebrow}</p>}
-        <h2 className="mt-1.5 font-serif text-2xl leading-none font-semibold tracking-tight sm:text-3xl">
+        {eyebrow && <p className="eyebrow text-electric">{eyebrow}</p>}
+        <h2 className="mt-2 font-serif text-[1.75rem] leading-none font-normal tracking-[-0.018em] sm:text-[2rem]">
           {title}
         </h2>
       </div>
       {href && (
         <Link
           href={href}
-          className="group inline-flex shrink-0 items-center gap-1 pb-1 text-xs font-medium whitespace-nowrap text-ink hover:text-crimson"
+          className="group inline-flex shrink-0 items-center gap-1.5 pb-1 text-xs font-medium whitespace-nowrap text-ink hover:text-electric"
         >
           {linkLabel}
           <ArrowRight

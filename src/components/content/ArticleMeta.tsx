@@ -26,18 +26,18 @@ export function ArticleMeta({
       )}
     >
       {cat && (
-        <Link href={`/category/${cat.slug}`} className="eyebrow text-crimson hover:underline">
+        <Link href={`/category/${cat.slug}`} className="eyebrow text-electric hover:underline">
           {cat.title}
         </Link>
       )}
-      {cat && <span aria-hidden className="text-hairline">·</span>}
-      <time dateTime={isoDate(article.publishedDate)}>
+      {cat && <span aria-hidden className="text-hairline-strong">·</span>}
+      <time dateTime={isoDate(article.publishedDate)} className="num">
         {formatDate(article.publishedDate)}
       </time>
       {showReadingTime && (
         <>
-          <span aria-hidden className="text-hairline">·</span>
-          <span>{readingTime(article.content)} min read</span>
+          <span aria-hidden className="text-hairline-strong">·</span>
+          <span className="num">{readingTime(article.content)} min</span>
         </>
       )}
     </div>
