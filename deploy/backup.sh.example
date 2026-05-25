@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Nightly backup for the production VPS.
+#
+# Install:
+#   sudo cp backup.sh.example /usr/local/bin/pulse-backup && sudo chmod +x !$
+#   crontab -e
+#     15 3 * * *  /usr/local/bin/pulse-backup
+#
+# Edit APP_DIR and BACKUP_DIR for your VPS.
+
+set -euo pipefail
+
+APP_DIR="/var/www/pulse"
+BACKUP_DIR="/var/backups/pulse"
+RETENTION_DAYS=14
+DATE="$(date +%F)"
+
+mkdir -p "$BACKUP_DIR"
+
+# SQLite hot backup — safe while the app is running thanks to WAL mode.
+sqlite3 "$APP_DIR/pulse.db" ".backup '$BACKUP_DIR/pulse-$DATE.db'"
+
+# Mirror the uploaded media folder.
+rsync -a --delete "$APP_DIR/media/" "$BACKUP_DIR/media/"
+
+# Weekly tarball on Sundays.
+if [ "$(date +%u)" = "7" ]; then
+  tar -czf "$BACKUP_DIR/pulse-weekly-$DATE.tar.gz" \
+    -C "$BACKUP_DIR" "pulse-$DATE.db" media
+fi
+
+# Prune old daily DB snapshots beyond the retention window.
+find "$BACKUP_DIR" -maxdepth 1 -name 'pulse-*.db' -type f \
+  -mtime +"$RETENTION_DAYS" -delete
+
+echo "$(date -u +%FT%TZ) backup complete: $BACKUP_DIR/pulse-$DATE.db"

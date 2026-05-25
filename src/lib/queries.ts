@@ -1,3 +1,4 @@
+import type { Where } from 'payload'
 import { getPayloadClient } from './payload'
 import type { Article, Category, Magazine, Page, Tag, Testimonial } from '@/payload-types'
 
@@ -28,7 +29,7 @@ type ArticleQuery = {
 
 export async function getArticles(opts: ArticleQuery = {}) {
   const payload = await getPayloadClient()
-  const where: Record<string, unknown> = { ...PUBLISHED }
+  const where: Where = { ...PUBLISHED }
   if (opts.categoryId != null) where.category = { in: [opts.categoryId] }
   if (opts.tagId != null) where.tags = { in: [opts.tagId] }
   if (opts.excludeIds?.length) where.id = { not_in: opts.excludeIds }

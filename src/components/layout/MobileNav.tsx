@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { Menu, X, Search } from 'lucide-react'
 import { SITE, type NavItem } from '@/lib/site'
 import { cn } from '@/lib/utils'
@@ -10,12 +9,7 @@ import { cn } from '@/lib/utils'
 /** Hamburger menu + slide-down panel for small screens. */
 export function MobileNav({ items }: { items: NavItem[] }) {
   const [open, setOpen] = useState(false)
-  const pathname = usePathname()
-
-  // Close the panel whenever the route changes.
-  useEffect(() => {
-    setOpen(false)
-  }, [pathname])
+  const close = () => setOpen(false)
 
   // Lock body scroll while the panel is open.
   useEffect(() => {
@@ -50,6 +44,7 @@ export function MobileNav({ items }: { items: NavItem[] }) {
               <li key={`${item.label}-${item.href}`} className="border-b border-hairline">
                 <Link
                   href={item.href}
+                  onClick={close}
                   className="flex items-baseline gap-4 py-4 font-serif text-2xl text-ink hover:text-crimson"
                 >
                   <span className="eyebrow text-faint">
@@ -62,6 +57,7 @@ export function MobileNav({ items }: { items: NavItem[] }) {
           </ul>
           <Link
             href="/search"
+            onClick={close}
             className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-crimson"
           >
             <Search size={16} strokeWidth={1.75} />

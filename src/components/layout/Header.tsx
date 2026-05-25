@@ -33,7 +33,7 @@ export async function Header() {
       {/* Wordmark */}
       <Container className="py-7 text-center sm:py-9">
         <Link href="/" className="inline-block" aria-label={`${SITE.name} — home`}>
-          <span className="block font-serif text-[1.75rem] leading-none font-semibold tracking-tight text-ink sm:text-[2.75rem] lg:text-[3.25rem]">
+          <span className="block font-serif text-[1.25rem] leading-none font-semibold tracking-tight text-ink sm:text-[2.75rem] lg:text-[3.25rem]">
             The Pulse Magazines
           </span>
         </Link>

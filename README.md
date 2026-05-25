@@ -1,67 +1,262 @@
-# Payload Blank Template
+# The Pulse Magazines
 
-This template comes configured with the bare minimum to get started on anything you need.
+The Pulse Magazines website and CMS — a self-owned successor to the
+WordPress site at `thepulsemagazines.com`. One Next.js app, one Payload
+CMS admin, one SQLite database, designed to be hosted on a single
+Hostinger VPS.
 
-## Quick start
+> **Where every story matters.**
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+---
 
-## Quick Start - local setup
+## What's in the box
 
-To spin up this template locally, follow these steps:
+- **Next.js 16 (App Router) + React 19 + TypeScript** — server-rendered
+  pages with on-demand revalidation, so edits go live in seconds.
+- **Payload CMS 3** — admin UI at `/admin`. The owner edits articles,
+  magazine issues, categories, tags, authors, testimonials, pages,
+  navigation, the homepage and site settings — no code, no WordPress.
+- **SQLite via Drizzle** — one `pulse.db` file. Trivial to back up.
+- **Tailwind v4** with the **"Ink & Paper"** editorial design system —
+  Fraunces serif headlines on warm paper, one crimson accent.
+- **Newsletter** stored in the CMS with a one-click CSV export.
+- **Contact form** delivered to the owner's inbox over SMTP.
+- **SEO**: per-page metadata, JSON-LD, dynamic sitemap, robots, RSS feed,
+  301 redirects from old WordPress URLs.
 
-### Clone
+---
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+## Requirements
 
-### Development
+- **Node 20 LTS or newer**
+- **pnpm 9** (`corepack enable && corepack prepare pnpm@9 --activate`)
+- macOS / Linux for development; Linux (Hostinger VPS, Ubuntu 22.04+)
+  for production. (Windows works via WSL.)
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+---
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+## Local development
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+```bash
+# 1. Install dependencies
+pnpm install
 
-#### Docker (Optional)
+# 2. Set up your local environment
+cp .env.example .env
+# Then edit .env — at minimum, generate a Payload secret:
+#   openssl rand -hex 32   →  paste as PAYLOAD_SECRET
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+# 3. Create the SQLite tables
+pnpm db:migrate
 
-To do so, follow these steps:
+# 4. (One-time) Pull every article, magazine and image from the live
+#    WordPress site into your local database. Idempotent — safe to re-run.
+pnpm migrate:wp
 
-- Modify the `MONGODB_URL` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+# 5. Run the app
+pnpm dev
+```
 
-## How it works
+- Public site → http://localhost:3000
+- CMS admin   → http://localhost:3000/admin (creates the first user on
+  visit)
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+To verify a production build locally:
 
-### Collections
+```bash
+pnpm build && pnpm start
+```
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+---
 
-- #### Users (Authentication)
+## Scripts
 
-  Users are auth-enabled collections that have access to the admin panel.
+| Command | Purpose |
+|---|---|
+| `pnpm dev` | Run the dev server |
+| `pnpm build` | Compile the production bundle |
+| `pnpm start` | Run the production server |
+| `pnpm lint` | Lint with ESLint |
+| `pnpm db:migrate` | Apply Payload schema migrations |
+| `pnpm db:migrate:create <name>` | Snapshot the current schema as a new migration |
+| `pnpm db:migrate:status` | Show migration status |
+| `pnpm generate:types` | Regenerate `src/payload-types.ts` |
+| `pnpm generate:importmap` | Rebuild the Payload admin import map |
+| `pnpm migrate:wp [--dry-run] [--only=articles]` | Pull content from the old WordPress site |
+| `pnpm export:subscribers` | Export the newsletter list to a CSV file |
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+---
 
-- #### Media
+## Project layout
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+```
+src/
+├── app/
+│   ├── (frontend)/            Public site (App Router routes)
+│   ├── (payload)/             Payload admin UI + REST/GraphQL
+│   ├── api/export-subscribers Auth-protected CSV download
+│   ├── robots.ts              Robots.txt
+│   └── sitemap.ts             sitemap.xml
+├── collections/               Articles, Magazines, Categories, Tags,
+│                              Authors, Media, Testimonials, Pages,
+│                              Subscribers, ContactSubmissions, Users
+├── globals/                   SiteSettings, Navigation, Homepage
+├── fields/                    Reusable slug / seo / wpId fields
+├── access/                    anyone / authenticated / publishedOrAuthenticated
+├── hooks/                     Revalidation + contact-email hooks
+├── components/                layout/ home/ content/ forms/ admin/ ui/
+├── actions/                   Server actions (subscribe, submitContact)
+├── lib/                       payload client, queries, seo, jsonld, format
+├── migrations/                Committed Drizzle migration files
+├── payload.config.ts          CMS configuration
+└── payload-types.ts           AUTO-GENERATED — committed
 
-### Docker
+scripts/                       One-time WordPress migration + utilities
+deploy/                        nginx.conf.example, backup.sh.example
+ecosystem.config.cjs           PM2 process definition
+media/                         Uploaded images (gitignored)
+pulse.db                       SQLite database (gitignored)
+```
 
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+---
 
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
+## Deploying to a Hostinger VPS
 
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
+> **Prerequisite:** a Hostinger **VPS** plan (not shared hosting). The
+> app needs to run a persistent Node.js process, which only the VPS
+> tier supports. Hostinger KVM 1 is ample for this site.
 
-## Questions
+### 1. Provision the server (one time)
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+```bash
+# As a non-root sudo user on Ubuntu 22.04+
+sudo apt update
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs git sqlite3 nginx certbot python3-certbot-nginx
+sudo corepack enable
+sudo npm i -g pm2
+```
+
+### 2. Deploy the app
+
+```bash
+sudo mkdir -p /var/www/pulse && sudo chown $USER:$USER /var/www/pulse
+cd /var/www/pulse
+git clone <your-repo-url> .
+
+cp .env.example .env
+chmod 600 .env
+# Fill in: PAYLOAD_SECRET, NEXT_PUBLIC_SERVER_URL=https://thepulsemagazines.com,
+# SMTP_HOST/USER/PASS/PORT, CONTACT_NOTIFY_EMAIL
+
+pnpm install --frozen-lockfile
+pnpm db:migrate
+pnpm build
+
+# Optional: pull existing WordPress content into production
+pnpm migrate:wp
+
+pm2 start ecosystem.config.cjs
+pm2 save
+pm2 startup        # follow the printed command — enables boot-time start
+```
+
+### 3. nginx + SSL
+
+```bash
+sudo cp deploy/nginx.conf.example /etc/nginx/sites-available/thepulsemagazines.com
+# Edit the server_name lines if your domain differs
+sudo ln -s /etc/nginx/sites-available/thepulsemagazines.com /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+
+sudo certbot --nginx -d thepulsemagazines.com -d www.thepulsemagazines.com
+# Auto-renew is installed via certbot.timer.
+```
+
+### 4. DNS cutover
+
+1. Lower your domain's A-record TTL to 300s the day before cutover.
+2. Verify the new site over its server IP (edit `/etc/hosts` locally to
+   test before DNS).
+3. Point the A record to the VPS IP. Keep WordPress running until you
+   confirm the new site is serving production traffic.
+
+### 5. Backups
+
+```bash
+sudo cp deploy/backup.sh.example /usr/local/bin/pulse-backup
+sudo chmod +x /usr/local/bin/pulse-backup
+sudo crontab -e
+# Add: 15 3 * * *  /usr/local/bin/pulse-backup
+```
+
+Nightly: hot-copies `pulse.db` (safe — SQLite WAL mode) and rsyncs the
+`media/` folder. Weekly tarball on Sundays. 14-day retention.
+
+### Updating later
+
+```bash
+cd /var/www/pulse
+git pull
+pnpm install --frozen-lockfile
+pnpm db:migrate
+pnpm build
+pm2 restart pulse
+```
+
+---
+
+## How the owner uses the CMS
+
+- **Log in** at `https://thepulsemagazines.com/admin` with the user
+  account created on first visit.
+- **Publish an article** — "Content → Articles → Create new". Title,
+  excerpt, featured image, body, category, then **Save & Publish**.
+- **Feature it on the homepage** — "Settings → Homepage → Editor's
+  Choice" — pick the article from the list.
+- **Edit the navigation** — "Settings → Navigation Menus".
+- **Read messages** — "Inbox → Contact Messages".
+- **Download the newsletter list** — "Inbox → Subscribers → Export CSV".
+
+All changes go live within a few seconds — no rebuild required.
+
+---
+
+## Environment variables
+
+Every variable is documented inline in `.env.example`. The required
+ones for production are:
+
+| Variable | Purpose |
+|---|---|
+| `DATABASE_URI` | SQLite file path (e.g. `file:./pulse.db`) |
+| `PAYLOAD_SECRET` | Long random string — `openssl rand -hex 32` |
+| `NEXT_PUBLIC_SERVER_URL` | Public base URL, no trailing slash |
+| `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` | Outgoing email |
+| `CONTACT_NOTIFY_EMAIL` | Inbox that receives contact-form messages |
+| `WORDPRESS_API_URL` | Only needed if re-running `pnpm migrate:wp` |
+
+---
+
+## Notes & caveats
+
+- **SQLite is single-writer.** The PM2 config runs one process on purpose
+  — do not switch to cluster mode without first migrating to Postgres.
+- **Email deliverability** depends on SPF/DKIM/DMARC DNS records on your
+  domain. If contact-form emails land in spam, set those records and/or
+  swap the Nodemailer adapter for a transactional service (Resend, etc.).
+- **Magazine taxonomy** in WordPress used separate `magazine-category`
+  and `magazine-tag` collections — the migration collapses them into the
+  shared `categories` collection for simplicity.
+- **Tags**: the WordPress site had 826 raw tags but most were unused or
+  malformed hashtag strings — only tags actually attached to an article
+  (~700) are migrated.
+- **About page** is re-authored fresh from the existing copy — the
+  WordPress original was Elementor markup that wouldn't have round-tripped
+  cleanly. Edit it in the CMS as you like.
+
+---
+
+## License
+
+Proprietary — © The Pulse Magazines.

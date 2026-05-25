@@ -6,6 +6,9 @@
 export function ExportSubscribersButton() {
   return (
     <div style={{ marginBottom: 'var(--base, 1.25rem)' }}>
+      {/* Plain anchor: this triggers a CSV file download from an API route,
+          not an in-app page navigation. */}
+      {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
       <a
         href="/api/export-subscribers"
         style={{

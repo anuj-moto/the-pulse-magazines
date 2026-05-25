@@ -1,0 +1,52 @@
+# /etc/nginx/sites-available/thepulsemagazines.com
+#
+# Reverse-proxy nginx config for the Next.js + Payload app running on
+# 127.0.0.1:3000 via PM2. Copy to /etc/nginx/sites-available/, symlink
+# into sites-enabled/, then:
+#
+#   sudo nginx -t && sudo systemctl reload nginx
+#   sudo certbot --nginx -d thepulsemagazines.com -d www.thepulsemagazines.com
+#
+# certbot rewrites the listen blocks and adds the SSL certificate config.
+
+# Force www → apex
+server {
+    listen 80;
+    listen [::]:80;
+    server_name www.thepulsemagazines.com;
+    return 301 https://thepulsemagazines.com$request_uri;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name thepulsemagazines.com;
+
+    # Allow large image uploads in the CMS.
+    client_max_body_size 25M;
+
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript
+               application/xml application/rss+xml image/svg+xml;
+    gzip_min_length 1024;
+
+    # Long-cache fingerprinted static assets.
+    location /_next/static/ {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_set_header Host $host;
+        proxy_cache_valid 200 365d;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 60s;
+    }
+}
