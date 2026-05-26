@@ -1,0 +1,38 @@
+# Build artifacts
+.next/
+out/
+build/
+
+# Dependencies (Docker re-installs them inside the image)
+node_modules/
+
+# Local databases & uploaded media (live on the Fly volume in /data)
+*.db
+*.db-*
+pulse.db*
+media/
+public/media/
+
+# Local environment & secrets
+.env
+.env*.local
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+
+# Git
+.git/
+.gitignore
+
+# Migration artifacts
+migration-report.txt
+.migration-cache/
+
+# Test + tmp
+coverage/
+*.log
+npm-debug.log*
+.cache/
+.turbo/

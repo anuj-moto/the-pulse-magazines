@@ -1,0 +1,45 @@
+# Fly.io app config — generated for The Pulse Magazines.
+# Free tier friendly: shared 1-CPU + 512MB + 1GB persistent volume.
+# Auto-stops on idle; auto-starts on incoming request (~1–2s cold start).
+
+app           = "the-pulse-magazines"
+primary_region = "bom"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT     = "3000"
+  HOSTNAME = "0.0.0.0"
+  # DATABASE_URI + MEDIA_DIR are pinned inside the Dockerfile so they
+  # always point at the /data volume — no risk of misconfiguration.
+
+# Persistent volume — pulse.db + uploaded media live here. Survives
+# deploys, restarts, and machine moves between hosts.
+[[mounts]]
+  source       = "pulse_data"
+  destination  = "/data"
+  initial_size = "1gb"
+
+# Public HTTPS service. Fly handles the TLS cert automatically.
+[http_service]
+  internal_port       = 3000
+  force_https         = true
+  auto_stop_machines  = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes           = ["app"]
+
+  [[http_service.checks]]
+    grace_period  = "30s"
+    interval      = "30s"
+    method        = "get"
+    timeout       = "10s"
+    path          = "/"
+
+# One small machine is enough for the demo. SQLite is single-writer
+# so do NOT scale `count` above 1 without first switching DBs.
+[[vm]]
+  cpu_kind = "shared"
+  cpus     = 1
+  memory   = "512mb"

@@ -17,7 +17,9 @@ export const Media: CollectionConfig = {
     delete: authenticated,
   },
   upload: {
-    staticDir: path.resolve(process.cwd(), 'media'),
+    // In production (Fly.io) `MEDIA_DIR` points at the persistent volume
+    // at /data/media. Locally it falls back to a folder in the repo.
+    staticDir: process.env.MEDIA_DIR || path.resolve(process.cwd(), 'media'),
     mimeTypes: ['image/*'],
     focalPoint: true,
     imageSizes: [
