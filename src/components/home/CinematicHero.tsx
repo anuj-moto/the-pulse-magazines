@@ -55,7 +55,7 @@ export function CinematicHero({ article }: { article: Article }) {
   return (
     <section
       ref={ref}
-      className="relative isolate -mt-px min-h-[100svh] w-full overflow-hidden bg-paper"
+      className="relative isolate -mt-px min-h-[calc(100svh-var(--chrome-h))] w-full overflow-hidden bg-paper"
     >
       {/* Cover image (with parallax) */}
       {coverUrl ? (
@@ -92,12 +92,12 @@ export function CinematicHero({ article }: { article: Article }) {
       <DotGridOverlay className="-z-10 opacity-50" />
 
       {/* Content */}
-      <Container className="relative flex min-h-[100svh] flex-col justify-end pb-16 pt-28 sm:pb-24 sm:pt-36 lg:justify-center">
+      <Container className="relative flex min-h-[calc(100svh-var(--chrome-h))] flex-col justify-center py-10 sm:py-14">
         <motion.div
           variants={stagger}
           initial="hidden"
           animate="show"
-          className="max-w-3xl"
+          className="max-w-2xl"
         >
           {/* Eyebrow row */}
           <motion.div
@@ -117,8 +117,8 @@ export function CinematicHero({ article }: { article: Article }) {
           <motion.h1
             variants={item}
             transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-7 font-serif font-normal leading-[0.96] tracking-[-0.025em] text-ink text-balance"
-            style={{ fontSize: 'clamp(2.6rem, 6.6vw + 0.5rem, 7rem)' }}
+            className="mt-5 font-serif font-normal leading-[1.02] tracking-[-0.022em] text-ink text-balance"
+            style={{ fontSize: 'clamp(2rem, 4.4vw + 0.5rem, 5rem)' }}
           >
             {article.title}
           </motion.h1>
@@ -127,7 +127,7 @@ export function CinematicHero({ article }: { article: Article }) {
           <motion.p
             variants={item}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-7 max-w-xl text-lg leading-relaxed text-muted sm:text-xl"
+            className="mt-5 line-clamp-2 max-w-xl text-base leading-relaxed text-muted sm:text-lg"
           >
             {article.excerpt}
           </motion.p>
@@ -136,7 +136,7 @@ export function CinematicHero({ article }: { article: Article }) {
           <motion.div
             variants={item}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-faint"
+            className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-faint"
           >
             <span className="num text-ink">
               <time dateTime={isoDate(article.publishedDate)}>
@@ -153,7 +153,7 @@ export function CinematicHero({ article }: { article: Article }) {
           <motion.div
             variants={item}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-10 flex flex-wrap items-center gap-5"
+            className="mt-6 flex flex-wrap items-center gap-5"
           >
             <MagneticButton>
               <Link
@@ -183,7 +183,7 @@ export function CinematicHero({ article }: { article: Article }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 1.2 }}
-          className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-faint sm:flex"
+          className="absolute bottom-4 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-faint sm:flex"
         >
           <span className="eyebrow text-faint">Scroll</span>
           <motion.span

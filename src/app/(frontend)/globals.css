@@ -43,6 +43,21 @@
   --container-prose: 44rem;
 }
 
+/* ── Layout chrome height ─────────────────────────────────────────
+   Total height of the fixed/sticky chrome that sits above the
+   cinematic hero — used to keep the hero exactly one-fold tall.
+   Mobile = ticker + masthead row (no sticky section nav).
+   md+    = + the sticky section nav.
+   ────────────────────────────────────────────────────────────────── */
+:root {
+  --chrome-h: 96px;
+}
+@media (min-width: 768px) {
+  :root {
+    --chrome-h: 156px;
+  }
+}
+
 /* ── Base ─────────────────────────────────────────────────────── */
 @layer base {
   html {
